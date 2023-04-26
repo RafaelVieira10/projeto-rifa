@@ -4,6 +4,7 @@ import {
   Poppins_700Bold,
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
+import CardDisponiveis from "../../components/CardDisponiveis";
 
 function Disponiveis() {
 
@@ -20,6 +21,7 @@ function Disponiveis() {
     <View style={styles.container}>
       <View style={styles.divTitle}>
         <Text style={styles.title}>Disponíveis</Text>
+        <CardDisponiveis />
       </View>
     </View>
   );
