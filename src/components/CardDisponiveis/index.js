@@ -1,71 +1,91 @@
-import { useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
 import {
-    useFonts,
-    Poppins_400Regular,
-  } from "@expo-google-fonts/poppins";
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { useFonts, Poppins_400Regular } from "@expo-google-fonts/poppins";
 import api from "../../services/api";
 
 function CardDisponiveis() {
+  const [data, setData] = useState([]);
 
-    useEffect(()=> {
-        async function getCartelaDisponivel() {
-            const response = await api.get("/cartela/disponivel")
-            console.log(response)
-        }
-        getCartelaDisponivel()
-    },[])
-
-    let [fontsLoaded] = useFonts({
-        Poppins_400Regular,
-      });
-    
-      if (!fontsLoaded) {
-        return null;
+  useEffect(() => {
+    async function getCartelaDisponivel() {
+      try {
+        const response = await api.get("/cartela?status=disponivel");
+        setData(response.data.cartela);
+        console.log(response.data);
+      } catch (error) {
+        console.log("Erro");
       }
+    }
+    getCartelaDisponivel();
+  }, []);
+  console.log(data);
 
-    return(
-        <View style={styles.container}>
-            <View style={styles.divCard}>
-              <Text style={styles.nomeCartela}>NOME</Text>
-             <TouchableOpacity style={styles.buttonReservar}>
-                <Text style={styles.textButton}>Reservar</Text>
-             </TouchableOpacity>
-            </View>
-        </View>
-    );
+  let [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        {data.length != 0
+          ? data.map((item, index) => {
+              return (
+                <View style={styles.divCard} key={index}>
+                  <Text style={styles.nomeCartela}>{item.nome}</Text>
+                  <TouchableOpacity style={styles.buttonReservar}>
+                    <Text style={styles.textButton}>Reservar</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            })
+          : null}
+      </View>
+    </ScrollView>
+  );
 }
 
 export default CardDisponiveis;
 
 const styles = StyleSheet.create({
-    container: {
-        width: "100%",
-        alignItems: "center",
-    },
-    divCard: {
-        alignItems: "center",
-        width: "80%",
-        height: 100, 
-        backgroundColor: "#323946",
-        borderRadius: 10
-    },
-    nomeCartela: {
-        paddingTop: 5,
-        fontSize: 18,
-        color: "#fff",
-        fontFamily: "Poppins_400Regular"
-    },
-    buttonReservar: {
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: "#1F242D",
-        width: 90,
-        padding: 3,
-        marginTop: 25
-    },
-    textButton: {
-        color: "#fff",
-        fontFamily: "Poppins_400Regular"
-    }
-})
+  container: {
+    flex: 1,
+    alignItems: "center",
+    padding: 20
+  },
+  divCard: {
+    alignItems: "center",
+    width: "80%",
+    height: 100,
+    backgroundColor: "#323946",
+    borderRadius: 10,
+    marginTop: 50,
+  },
+  nomeCartela: {
+    paddingTop: 5,
+    fontSize: 18,
+    color: "#fff",
+    fontFamily: "Poppins_400Regular",
+  },
+  buttonReservar: {
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#1F242D",
+    width: 90,
+    padding: 3,
+    marginTop: 25,
+  },
+  textButton: {
+    color: "#fff",
+    fontFamily: "Poppins_400Regular",
+  },
+});

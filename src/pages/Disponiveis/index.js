@@ -21,8 +21,8 @@ function Disponiveis() {
     <View style={styles.container}>
       <View style={styles.divTitle}>
         <Text style={styles.title}>Disponíveis</Text>
-        <CardDisponiveis />
       </View>
+        <CardDisponiveis />
     </View>
   );
 }
@@ -33,12 +33,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1F242D",
+    justifyContent: "center"
   },
   divTitle: {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    height: 50,
+    // height: 50,
     marginTop: 50,
   },
   title: {
